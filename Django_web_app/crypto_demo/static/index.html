@@ -1,0 +1,205 @@
+<html>
+<head>
+  <style>
+    body{
+        background-color: blue;
+        padding: none;
+        margin: none;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+    .window_container{
+       background-color: white;
+       width: 80%;
+       height: 85%;
+       padding: 5px;
+       border-radius: 15px;
+       display: flex;
+       gap:10px;
+       display: flex;
+       justify-content: center;
+       align-items: center;
+
+    }
+    .horizontal_main_div{
+        width: 50%;
+        height: 100%;
+        display: block;
+        
+        
+    }
+    .vertical_25{
+        margin: 5px 0;
+        width: 100%;
+        height: 23%;
+        border: 1px solid black;
+        border-radius: 15px;
+        display: block;
+    }
+    .vertical_50{
+        margin: 5px 0;
+        width: 100%;
+        height: 48%;
+        border: 1px solid black;
+        border-radius: 15px;
+        display: block;
+    }
+    .vertical_75{
+        width: 100%;
+        margin: 5px 0;
+        border: 1px solid black;
+        border-radius: 15px;
+        height: 73%;
+        display: block;
+    }
+    .main_text{
+        font-family: 'Trebuchet MS', sans-serif;
+        font-size: 25px;
+    }
+    .blockchain_data {
+        width: 90%;
+        height: 50vh;
+        border-radius: 15px;
+        border: 1px solid black;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        overflow:hidden;
+        overflow-y: scroll;
+    }
+    .blockchain_blocks{
+        display: block;
+        margin-top: 30vw;
+    }
+
+    .blockchain_block{
+        background-color: blueviolet;
+        height: 3vw;
+        width: 3vw;
+        margin-top: 10px;
+    }
+    .center_div{
+        display: flex;
+        justify-content: center;
+    }
+    .send_btn{
+       width: 11vw;
+       height: 3vh;
+       background-color: #97ED8A;
+       border-radius: 3px;
+       border: 1px solid #044D29;
+    }
+    .inputField{
+
+    }
+  </style>
+</head>
+<body>
+<div class="window_container">
+    
+    <div class="horizontal_main_div">
+        <div class="vertical_25">
+            <div class="center_div" ><h1 class="main_text">Block data</h1></div>
+        </div>
+        <div class="vertical_75">
+            
+            <div class="center_div" ><h1 class="main_text">Blockchain data (Blocks)</h1></div>
+
+            <div class="center_div" ><div class = "blockchain_data">
+                <div class="blockchain_blocks" id = "blockchain_container_obj">
+                    <div class="blockchain_block"></div>
+                    <div class="blockchain_block"></div>
+                </div>
+            </div>
+
+            </div>
+        </div>
+    </div>
+
+    <div class="horizontal_main_div">
+        <div class="vertical_50">
+            <div class="center_div">
+                <h1 class="main_text">create transaction</h1>
+            </div>
+            <div class="center_div">
+                <form method="post" style = "width: 100%;height: 100%;" class="center_div">{% csrf_token %}
+                   
+                       <div class="horizontal_main_div">
+                          <div class="center_div"><p>your private key</p></div>
+                          <div class="center_div"><input></div>
+
+                          <div class="center_div"><p>Amount</p></div>
+                          <div class="center_div"><input></div>
+                       </div>
+                       <div class="horizontal_main_div">
+                        <div class="center_div"><p>To public key</p></div>
+                        <div class="center_div"><input></div>
+                        <div class="center_div"><p>Send</p></div>
+                        <div class="center_div"><div class="send_btn"><div class="center_div">Submit</div></div></div>
+
+                       </div>
+                </form>
+            </div>
+        </div>
+        <div class="vertical_25">
+            <div class="center_div">
+                <div class="horizontal_main_div">
+                    <div class="center_div"><p>Generate keys</p></div>
+                    <div class="center_div"><div class="send_btn"><div class="center_div">Generate</div></div></div>
+                </div>
+                <div class="horizontal_main_div">
+
+                    <div class="center_div"><p>Get wallet ballance</p></div>
+
+                    <form method="post">
+                        {% csrf_token %}
+                        <div class="center_div"><input></div>
+                        <div class="center_div"><div class="send_btn"><div class="center_div">Get</div></div></div>
+
+                    </form>
+                </div>
+            </div>
+        </div>
+        <div class="vertical_25">
+            <div class="center_div">
+                <div class="horizontal_main_div">
+                    <div class="center_div"><p>Derive key data from data private key</p></div>
+
+                    <form method="post">
+                        {% csrf_token %}
+                        <div class="center_div"><input></div>
+                        <div class="center_div"><div class="send_btn"><div class="center_div">Derive</div></div></div>
+
+                    </form></div>
+                <div class="horizontal_main_div"></div>
+            </div>
+        </div>
+    </div>
+    <script defer>
+        const blockchain_container = document.getElementById("blockchain_container_obj")
+        let block_data;
+        var block_chain_lenght = 20;
+        
+        const Parser = new DOMParser()
+        
+        
+        let counter = 0
+        while (counter < block_chain_lenght){
+                 blockchain_container.appendChild((Parser.parseFromString('<div class="blockchain_block"></div>',"text/html")).body.firstChild)
+                 counter++;
+        }
+        
+        
+
+
+
+        // display block data
+        const display_block_data = ()=> {}
+        // let 
+        const fetch_block_data = ()=>{}
+
+    </script>
+</div>
+</body>
+</html>
