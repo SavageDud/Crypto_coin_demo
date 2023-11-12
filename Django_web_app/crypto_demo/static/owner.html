@@ -1,0 +1,115 @@
+<html>
+<head>
+  <style>
+    body{
+        background-color: blue;
+        padding: none;
+        margin: none;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+    .window_container{
+       background-color: white;
+       width: 80%;
+       height: 85%;
+       padding: 5px;
+       border-radius: 15px;
+       display: flex;
+       gap:10px;
+       display: flex;
+       justify-content: center;
+       align-items: center;
+
+    }
+    .horizontal_main_div{
+        width: 50%;
+        height: 100%;
+        display: block;
+        
+        
+    }
+    .vertical_25{
+        margin: 5px 0;
+        width: 100%;
+        height: 23%;
+        border: 1px solid black;
+        border-radius: 15px;
+        display: block;
+    }
+    .vertical_50{
+        margin: 5px 0;
+        width: 100%;
+        height: 48%;
+        border: 1px solid black;
+        border-radius: 15px;
+        display: block;
+    }
+    .vertical_75{
+        width: 100%;
+        margin: 5px 0;
+        border: 1px solid black;
+        border-radius: 15px;
+        height: 73%;
+        display: block;
+    }
+    .main_text{
+        font-family: 'Trebuchet MS', sans-serif;
+        font-size: 25px;
+    }
+    
+
+    
+    .center_div{
+        display: flex;
+        justify-content: center;
+    }
+    .send_btn{
+       width: 11vw;
+       height: 4vh;
+       background-color: #97ED8A;
+       border-radius: 3px;
+       border: 1px solid #044D29;
+    }
+    input{
+        width: 11vw;
+    }
+  </style>
+</head>
+<body>
+<div class="window_container">
+        <div style="display: block; width: 100%;">
+        <div class="vertical_50">
+           <div class="center_div"><h1 class="main_text">Create genesis block</h1></div>
+           <div class="center_div"><div class="send_btn">
+            <div class="center_div" style="align-items: center; height: 100%;" onclick={Create_genesis_btn()}>Create</div></div></div>
+        </div>
+        <div class="vertical_50">
+            <div class="center_div"><h1 class="main_text">Mint tokens</h1>
+            </div>
+            <form>
+                {% csrf_token %}
+                <div class="center_div"><h1 class="main_text" style="font-size: 16px;">Deposit address</h1></div>
+                <div class="center_div"><input></div>
+                <div class="center_div"><h1 class="main_text" style="font-size: 16px;">Amount</h1></div>
+                <div class="center_div" style="margin-bottom: 10px;"><input></div>
+                <div class="center_div"><div class="send_btn">
+                    <div class="center_div" style="align-items: center; height: 100%;">Create</div>
+                </div></div>
+            </form>
+        </div>
+
+    <script defer>
+        const SERVER_ADRESS = "http://127.0.0.1:8000/"
+        
+        const Create_genesis_btn = ()=>{
+            request = fetch(SERVER_ADRESS + 'create_genesis')
+        }
+
+        
+          
+    </script>
+    </div>
+</div>
+</body>
+</html>

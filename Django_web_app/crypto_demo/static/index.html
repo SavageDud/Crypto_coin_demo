@@ -146,7 +146,7 @@
             <div class="center_div">
                 <div class="horizontal_main_div">
                     <div class="center_div"><p>Generate keys</p></div>
-                    <div class="center_div"><div class="send_btn"><div class="center_div">Generate</div></div></div>
+                    <div class="center_div"><div class="send_btn"><div class="center_div" onclick={Generate_keys()}>Generate</div></div></div>
                 </div>
                 <div class="horizontal_main_div">
 
@@ -181,6 +181,7 @@
         let block_data;
         var block_chain_lenght = 20;
         
+        // this is for the tab that displays all the blocks of the blockchain
         const Parser = new DOMParser()
         
         
@@ -190,7 +191,19 @@
                  counter++;
         }
         
-        
+        // this function will fetch to the server some new keys
+        const Generate_keys = () =>{
+            request = fetch("http://127.0.0.1:8000/create_keys/")
+            request.then(response => response.json())
+                    .then(data => {
+                        console.log("Data from server:", data);
+                        alert("public key : " + data.public + "  private key  : " + data.private   + "   address : " + data.to_adress)
+                        // You can do further processing with the data here
+                    })
+                    .catch(error => {
+                        console.error('Error:', error);
+                    });
+        }
 
 
 

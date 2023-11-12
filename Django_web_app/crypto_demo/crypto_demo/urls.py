@@ -17,9 +17,14 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path
 from . import views
+
+
 urlpatterns = [
     path("admin/", admin.site.urls),
-    path("" , views.index_view)
+    path("" , views.index_view),
+    path("mod/" , views.owner_view),
+    path("create_keys/" , views.Generate_public_and_private_keys),
+    path("create_genesis/" , views.Create_genesis_block)
     
 ]
 
