@@ -23,8 +23,14 @@ urlpatterns = [
     path("admin/", admin.site.urls),
     path("" , views.index_view),
     path("mod/" , views.owner_view),
-    path("create_keys/" , views.Generate_public_and_private_keys),
-    path("create_genesis/" , views.Create_genesis_block)
+    path("create_keys/" , views.API_Generate_public_and_private_keys),
+    path("create_genesis/" , views.Create_genesis_block),
+    path("admin_mint/" , views.Admin_command_mint),
+    path("api_getLenght/" , views.API_GetBlockChainLenght),
+    path('api_getBlockData/' , views.API_GetBlockData),
+    path('api_deriveKeys/' , views.API_Derivekeys),
+    path('api_getWalletBallance/' , views.API_GetWalletBallance),
+    path('api_uploadTransaction', views.Create_Transaction)
     
 ]
 

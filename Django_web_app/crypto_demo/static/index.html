@@ -59,25 +59,35 @@
     }
     .blockchain_data {
         width: 90%;
-        height: 50vh;
+        height: 80%;
         border-radius: 15px;
         border: 1px solid black;
         display: flex;
         justify-content: center;
         align-items: center;
-        overflow:hidden;
+        overflow:scroll;
         overflow-y: scroll;
+        
     }
     .blockchain_blocks{
         display: block;
-        margin-top: 30vw;
+       
+        
     }
 
     .blockchain_block{
-        background-color: blueviolet;
-        height: 3vw;
-        width: 3vw;
-        margin-top: 10px;
+        background-color: skyblue;
+        height: 4vh;
+        width: 5vh;
+        justify-content: center;
+        font-size: 10px;
+        justify-items: center;
+        display: flex;
+        padding-top: 2vh;
+        text-align: center;
+    }
+    .blockchain_block:active{
+        background-color: red;
     }
     .center_div{
         display: flex;
@@ -90,8 +100,12 @@
        border-radius: 3px;
        border: 1px solid #044D29;
     }
-    .inputField{
-
+    
+    input{
+        width: 11vw;
+    }
+    textarea{
+        height: 5vh;
     }
   </style>
 </head>
@@ -99,17 +113,32 @@
 <div class="window_container">
     
     <div class="horizontal_main_div">
-        <div class="vertical_25">
+        <div class="vertical_50" style="gap: 1px;">
             <div class="center_div" ><h1 class="main_text">Block data</h1></div>
+            <div class="center_div" >
+                
+                <div class = "blockchain_data" style="height: 20vh; padding: 5vh 0;">
+               
+                <div class="blockchain_blocks" style="padding-top: 50vh;" id = 'block_display_info'>
+                        <div class="center_div" style="gap: 3px;" ><h4>block index : </h4><textarea  id = 'Block_display_index'></textarea></div>
+                        <div class="center_div" style="gap: 3px;" ><h4>block hash : </h4><textarea id = 'Block_display_hash'></textarea></div>
+                        <div class="center_div" style="gap: 3px;" ><h4>previouse hash : </h4><textarea id = 'Block_display_prevhash'></textarea></div>
+                        <div class="center_div" style="gap: 3px;" ><h4>From: </h4><textarea id = 'Block_display_fromAddress'></textarea></div>
+                        <div class="center_div" style="gap: 3px;" ><h4>To : </h4><textarea id = 'Block_display_toAddressh'></textarea></div>
+                        <div class="center_div" style="gap: 3px;" ><h4>Amount : </h4><textarea id = 'Block_display_amount'>block hash</textarea></div>
+                        <div class="center_div" style="gap: 3px;" ><h4>Signature : </h4><textarea id = 'Block_display_signature'>block hash</textarea></div>
+                        <div class="center_div" style="gap: 3px;" ><h4>nonce : </h4><textarea id = 'Block_display_nonce'>block hash</textarea></div>
+                </div>
+                </div>
+
+            </div>
         </div>
-        <div class="vertical_75">
+        <div class="vertical_50">
             
             <div class="center_div" ><h1 class="main_text">Blockchain data (Blocks)</h1></div>
 
             <div class="center_div" ><div class = "blockchain_data">
                 <div class="blockchain_blocks" id = "blockchain_container_obj">
-                    <div class="blockchain_block"></div>
-                    <div class="blockchain_block"></div>
                 </div>
             </div>
 
@@ -127,14 +156,16 @@
                    
                        <div class="horizontal_main_div">
                           <div class="center_div"><p>your private key</p></div>
-                          <div class="center_div"><input></div>
+                          <div class="center_div"><input id = transactionForm_privateKey></div>
 
                           <div class="center_div"><p>Amount</p></div>
-                          <div class="center_div"><input></div>
+                          <div class="center_div"><input id = 'transactionForm_amount'></div>
+                          <div class="center_div"><p>public_key</p></div>
+                          <div class="center_div"><input id = 'transactionForm_publicKey'></div>
                        </div>
                        <div class="horizontal_main_div">
-                        <div class="center_div"><p>To public key</p></div>
-                        <div class="center_div"><input></div>
+                        <div class="center_div"><p>To <address></address></p></div>
+                        <div class="center_div"><input id = 'transactionForm_toAddress'></div>
                         <div class="center_div"><p>Send</p></div>
                         <div class="center_div"><div class="send_btn"><div class="center_div">Submit</div></div></div>
 
@@ -154,8 +185,8 @@
 
                     <form method="post">
                         {% csrf_token %}
-                        <div class="center_div"><input></div>
-                        <div class="center_div"><div class="send_btn"><div class="center_div">Get</div></div></div>
+                        <div class="center_div"><input id = 'ballanceform_adress'></div>
+                        <div class="center_div"><div class="send_btn" onclick={GetWalletBallance()}><div class="center_div">Get</div></div></div>
 
                     </form>
                 </div>
@@ -168,8 +199,8 @@
 
                     <form method="post">
                         {% csrf_token %}
-                        <div class="center_div"><input></div>
-                        <div class="center_div"><div class="send_btn"><div class="center_div">Derive</div></div></div>
+                        <div class="center_div"><input id = 'derivation_target_input'></div>
+                        <div class="center_div"><div class="send_btn"><div class="center_div" onclick={Derive_keys()}>Derive</div></div></div>
 
                     </form></div>
                 <div class="horizontal_main_div"></div>
@@ -180,24 +211,96 @@
         const blockchain_container = document.getElementById("blockchain_container_obj")
         let block_data;
         var block_chain_lenght = 20;
+
+        const SERVER_ADDRESS = "http://127.0.0.1:8000/"
         
+
+
+
+
+        const csrftoken = getCookie('csrftoken');
+        
+
+
+        function getCookie(name) {
+            let cookieValue = null;
+            if (document.cookie && document.cookie !== '') {
+                const cookies = document.cookie.split(';');
+                for (let i = 0; i < cookies.length; i++) {
+                    const cookie = cookies[i].trim();
+                    // Does this cookie string begin with the name we want?
+                    if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                        cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                        break;
+                    }
+                }
+            }
+            return cookieValue;
+        }
+
+
+       
         // this is for the tab that displays all the blocks of the blockchain
         const Parser = new DOMParser()
         
-        
-        let counter = 0
-        while (counter < block_chain_lenght){
-                 blockchain_container.appendChild((Parser.parseFromString('<div class="blockchain_block"></div>',"text/html")).body.firstChild)
-                 counter++;
+        const FetchBlock = (block_id)=>{
+            
+            let requestBodyData = new FormData()
+
+             requestBodyData.append("index"  , block_id)
+
+             const request = new Request(
+                SERVER_ADDRESS + "api_getBlockData/",
+
+                
+                {
+                    method: 'POST',
+                    headers: {'X-CSRFToken': csrftoken ,},
+                    body: requestBodyData ,
+                    mode: 'same-origin' // Do not send CSRF token to another domain.
+                }
+            );
+            fetch(request).then(response => response.json())
+            .then((response) =>{
+                console.log(response)
+                let object = document.getElementById('block_display_info')
+                let keys = ['index' , 'blockHash' , 'previouseHash' , 'fromAddress' , 'toAddress'  , 'amount' , 'signature' , 'nonce']
+                let counter = 1
+                keys.forEach((key)=>{
+                    object.childNodes[counter].childNodes[1].value = response[key]
+                    counter+=2
+                })
+            });
+             
         }
+        const DisplayLenght = ()=>{
+            let counter = 0
+            console.log(block_chain_lenght)
+            // create the buttons
+            blockchain_container.innerHTML = '';
+            while (counter < block_chain_lenght){
+
+                    let value = counter;
+                    
+                    blockchain_container.appendChild((Parser.parseFromString('<p class="blockchain_block">'+counter.toString() + '</p>',"text/html")).body.firstChild)
+                    blockchain_container.childNodes[counter].addEventListener('click', function() {FetchBlock(value)})
+    
+                    counter++;
+                    
+            }
+            
+            
+            
+        }
+      
         
         // this function will fetch to the server some new keys
         const Generate_keys = () =>{
-            request = fetch("http://127.0.0.1:8000/create_keys/")
+            request = fetch(  SERVER_ADDRESS + "create_keys/")
             request.then(response => response.json())
                     .then(data => {
                         console.log("Data from server:", data);
-                        alert("public key : " + data.public + "  private key  : " + data.private   + "   address : " + data.to_adress)
+                        alert("public key : " + data.public + "  private key  : " + data.private   + "   address : " + data.address)
                         // You can do further processing with the data here
                     })
                     .catch(error => {
@@ -205,12 +308,97 @@
                     });
         }
 
+        const Derive_keys = () => {
+            let requestBodyData = new FormData()
+
+             requestBodyData.append("key"  , document.getElementById('derivation_target_input').value)
+
+             const request = new Request(
+                SERVER_ADDRESS + "api_deriveKeys/",
+
+                
+                {
+                    method: 'POST',
+                    headers: {'X-CSRFToken': csrftoken ,},
+                    body: requestBodyData ,
+                    mode: 'same-origin' // Do not send CSRF token to another domain.
+                }
+            );
+            fetch(request).then(response => response.json())
+            .then((response) =>{
+                alert('public key : ' + response.public_key + '   address : ' + response.address)
+            });
+        }
+        const GetWalletBallance = () => {
+            let requestBodyData = new FormData()
+
+             requestBodyData.append("address"  , document.getElementById('ballanceform_adress').value)
+
+             const request = new Request(
+                SERVER_ADDRESS + "api_getWalletBallance/",
+
+                
+                {
+                    method: 'POST',
+                    headers: {'X-CSRFToken': csrftoken ,},
+                    body: requestBodyData ,
+                    mode: 'same-origin' // Do not send CSRF token to another domain.
+                }
+            );
+            fetch(request).then(response => response.json())
+            .then((response) =>{
+                alert('amount : ' + response.amount)
+            });
+        }
 
 
-        // display block data
-        const display_block_data = ()=> {}
-        // let 
-        const fetch_block_data = ()=>{}
+        const UploadTransaction = ()=>{
+            let requestBodyData = new FormData()
+
+            requestBodyData.append("toAddress"  , document.getElementById('transactionForm_toAddress').value)
+            requestBodyData.append("amount"  , document.getElementById('transactionForm_amount').value)
+            requestBodyData.append("publicKey"  , document.getElementById('transactionForm_publicKey').value)
+            requestBodyData.append("privateKey"  , document.getElementById('transactionForm_privateKey').value)
+
+            const request = new Request(
+                SERVER_ADDRESS + "api_getWalletBallance/",
+
+                
+                {
+                    method: 'POST',
+                    headers: {'X-CSRFToken': csrftoken ,},
+                    body: requestBodyData ,
+                    mode: 'same-origin' // Do not send CSRF token to another domain.
+                }
+            );
+            fetch(request).then(response => response.json())
+            .then((response) =>{
+                alert('amount : ' + response.amount)
+            });
+        }
+
+
+
+
+        
+      
+
+        const FetchChainLenght = ()=>{
+
+            request = fetch( SERVER_ADDRESS + "api_getLenght/")
+
+            request.then(response => response.json())
+                    .then(data => {
+                        block_chain_lenght = parseInt(data.lenght)
+                        DisplayLenght()
+                        // You can do further processing with the data here
+                    })
+                    .catch(error => {
+                        console.error('Error:', error);
+                    });
+        }
+
+        FetchChainLenght()
 
     </script>
 </div>
