@@ -23,7 +23,7 @@ The address where its hosted will be displayed on your console
 </br>
 Next step is to Initial the blockchain
 </br>
-The first step is to go localhost:8000/admin/
+The first step is to go address/admin/
 and login 
 </br>
 Here is the admin login
@@ -32,6 +32,6 @@ password : 1234
 Note : once your logged in you should change the password
 </br>
 </br>
-Then go to localhost:8000/mod/
+Then go to address/mod/
 and click 
 
