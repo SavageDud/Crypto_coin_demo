@@ -6,3 +6,32 @@ to start you need to have installed django on your machine
 you can do that with : pip install django
 
 
+</br>
+</br>
+</br>
+</br>
+Next 
+open a console then open the directory with manage.py
+run : cd Django_web_app/crypto_demo
+</br>
+</br>
+Then run: python manage.py runserver
+</br>
+</br>
+The address where its hosted will be displayed on your console
+</br>
+</br>
+Next step is to Initial the blockchain
+</br>
+The first step is to go localhost:8000/admin/
+and login 
+</br>
+Here is the admin login
+username : admin
+password : 1234
+Note : once your logged in you should change the password
+</br>
+</br>
+Then go to localhost:8000/mod/
+and click 
+
