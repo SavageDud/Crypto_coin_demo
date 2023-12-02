@@ -32,6 +32,15 @@ password : 1234
 Note : once your logged in you should change the password
 </br>
 </br>
-Then go to address/mod/
-and click 
+Then go to address/mod/</br>
+and click "Create genesis block"</br>
+once that is done , people can actually use the application
+</br>
+</br>
+</br>
 
+Theire is still one problem , there are no tokens on the actualle blockchain , so you need to create them in mod panel
+</br>
+</br>
+</br>
+After that people can finaly trade tokens on your blockchain
