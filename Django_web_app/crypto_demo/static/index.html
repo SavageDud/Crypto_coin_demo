@@ -164,10 +164,10 @@
                           <div class="center_div"><input id = 'transactionForm_publicKey'></div>
                        </div>
                        <div class="horizontal_main_div">
-                        <div class="center_div"><p>To <address></address></p></div>
+                        <div class="center_div"><p>To address</p></div>
                         <div class="center_div"><input id = 'transactionForm_toAddress'></div>
                         <div class="center_div"><p>Send</p></div>
-                        <div class="center_div"><div class="send_btn"><div class="center_div">Submit</div></div></div>
+                        <div class="center_div"><div class="send_btn" onclick={UploadTransaction()}><div class="center_div">Submit</div></div></div>
 
                        </div>
                 </form>
@@ -361,7 +361,7 @@
             requestBodyData.append("privateKey"  , document.getElementById('transactionForm_privateKey').value)
 
             const request = new Request(
-                SERVER_ADDRESS + "api_getWalletBallance/",
+                SERVER_ADDRESS + "api_uploadTransaction/",
 
                 
                 {
@@ -373,8 +373,8 @@
             );
             fetch(request).then(response => response.json())
             .then((response) =>{
-                alert('amount : ' + response.amount)
-            });
+                console.log(response)
+            }).catch(error => {console.error('error : ' , error )});
         }
 
 

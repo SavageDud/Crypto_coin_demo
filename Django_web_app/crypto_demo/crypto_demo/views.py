@@ -113,28 +113,24 @@ def Create_Transaction(request):
            return JsonResponse({'error': 'invalid to address'} , status = 400)
          
         
-        fromAddress = cryptolib.HashKeyPair(public_key)
+        fromAddress = (cryptolib.HashString(request.POST['publicKey'])).upper()
         
         
         if(GetBallance(fromAddress) < amount):
             return JsonResponse({"message" : "not enought tokens. You are broke"})
         
-            
         
-        
-       
-        
-      
             
         
         index_ = Block.objects.count()
         signature = json.dumps(cryptolib.Create_signature(private_key, to_address, amount , public_key))
         
         
-        previouse_hash = Block.objects.values('last_block_hash')[index_ - 1]
+        previouse_hash = Block.objects.values('block_hash')[index_ - 1]['block_hash']
         
         block = cryptolib.Format_data_for_processing(fromAddress, previouse_hash, amount, to_address, signature, public_key, index_)
         mint_block(block)
+        return JsonResponse({"success" : "your transaction has been accepted"})
         
     except:
         return JsonResponse({"error" : "errors in the inputs"})
@@ -144,7 +140,7 @@ def Create_Transaction(request):
 #given a block runs some final checks before saving it
 def Upload_block(block_data):
     
-    
+    print('hello world')
     if(Block.objects.count() == 0):
         new_entrie = Block(block_hash = block_data[0],
                        last_block_hash = block_data[1],
@@ -160,7 +156,7 @@ def Upload_block(block_data):
     
     #check if the block hash = last_block_hash
     if(Block.objects.values('block_hash')[Block.objects.count() - 1]['block_hash'] == block_data[1]):
-      
+        print('saving block')
         new_entrie = Block(block_hash = block_data[0],
                        last_block_hash = block_data[1],
                        from_address = block_data[2],

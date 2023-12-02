@@ -30,7 +30,7 @@ urlpatterns = [
     path('api_getBlockData/' , views.API_GetBlockData),
     path('api_deriveKeys/' , views.API_Derivekeys),
     path('api_getWalletBallance/' , views.API_GetWalletBallance),
-    path('api_uploadTransaction', views.Create_Transaction)
+    path('api_uploadTransaction/', views.Create_Transaction)
     
 ]
 
